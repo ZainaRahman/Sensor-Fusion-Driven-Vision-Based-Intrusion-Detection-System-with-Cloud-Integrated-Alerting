@@ -57,7 +57,7 @@ Traditional fencing and manual night patrols are labour-intensive and unreliable
 The system is organised into three cooperating layers:
 
 - **Sensor / edge layer** — Arduino + dual ultrasonic sensors, streaming distance readings to the Pi over USB serial.
-- **Core processing layer** — Raspberry Pi 4B, running sensor fusion, camera capture, YOLOv8s inference, face recognition, and driving the buzzer/LED/OLED alert hardware.
+- **Core processing layer** — Raspberry Pi 5, running sensor fusion, camera capture, YOLOv8s inference, face recognition, and driving the buzzer/LED/OLED alert hardware.
 - **Cloud layer** — Firebase (Firestore, Storage, Cloud Messaging), bridging the farm to the owner's mobile device.
 
 ![System Architecture](images/fig1_system_architecture.png)
@@ -87,7 +87,7 @@ The system spends most of its time in a cheap, low-power idle/monitoring state, 
 
 | Component | Model / Type | Interface | Role in the System |
 |---|---|---|---|
-| Central controller | Raspberry Pi 4B | — | Runs sensor fusion logic, YOLOv8s inference, face recognition, buzzer/LED/OLED control, and all Firebase communication. |
+| Central controller | Raspberry Pi 5 | — | Runs sensor fusion logic, YOLOv8s inference, face recognition, buzzer/LED/OLED control, and all Firebase communication. |
 | Microcontroller (sensor node) | Arduino (Uno-class board, USB-serial) | USB → `/dev/ttyACM0` | Drives the two ultrasonic sensors and streams `US1:<cm>,US2:<cm>` readings to the Pi at ~10 Hz. |
 | Ultrasonic distance sensor ×2 | HC-SR04-class ultrasonic ranging module | Digital I/O (Arduino) | US1: low/animal-level gate. US2: high/human-level gate. Feed the consensus-filtered fusion logic. |
 | Light-Dependent Resistor module ×2 | LDR breakout module with digital (D0) output | GPIO17 (LDR1), GPIO27 (LDR2) | Break-beam style light sensors; LDR1 = low beam (animal level), LDR2 = high beam (human level). |
@@ -129,7 +129,7 @@ The wiring splits into two sides: the **Arduino Uno**, which is wired directly t
 
 ## Software Components
 
-**Platform:** Raspberry Pi OS (Debian-based, 64-bit) on Raspberry Pi 4B, Python 3.
+**Platform:** Raspberry Pi OS (Debian-based, 64-bit) on Raspberry Pi 5, Python 3.
 
 | Package | Purpose |
 |---|---|
@@ -164,7 +164,7 @@ main.py                      # Core detection pipeline (sensor fusion, YOLO, Fir
 
 ### 1. Prerequisites
 
-- Raspberry Pi 4B running Raspberry Pi OS (64-bit)
+- Raspberry Pi 5 running Raspberry Pi OS (64-bit)
 - Arducam IMX519 connected via CSI ribbon
 - Arduino (Uno-class board) connected via USB, running `arduino/ultrasonic_node.ino`
 - LDR modules, buzzer, LED, and OLED wired per the [Wiring / GPIO Summary](#wiring--gpio-summary) above
@@ -240,7 +240,7 @@ python3 main.py
 - Only a single owner face encoding is supported at a time — multiple authorized people cannot yet be distinguished individually.
 - Firebase Cloud Storage image upload is unavailable on the free-tier (Spark) plan; the Base64 fallback keeps a smaller, lower-quality image.
 - The Arduino-to-Pi link is a single USB serial connection; if it drops, the system temporarily falls back to LDR-only sensing until it reconnects.
-- Continuous YOLOv8s inference on a Raspberry Pi 4B (without a hardware accelerator) introduces a short delay between the initial sensor trigger and the final classified alert.
+- Continuous YOLOv8s inference on a Raspberry Pi 5 (without a hardware accelerator) introduces a short delay between the initial sensor trigger and the final classified alert.
 
 ---
 
