@@ -154,6 +154,7 @@ main.py                      # Core detection pipeline (sensor fusion, YOLO, Fir
 ├── serviceAccountKey.json       # Firebase service account credentials (not committed)
 ├── detections_via_app/                  # Local fallback copies of captured detection images
 ├── images/                      # Architecture / wiring diagrams used in this README
+├── mobile_app/                      # README related to flutter code and setup for the app
 └── README.md
 ```
 
