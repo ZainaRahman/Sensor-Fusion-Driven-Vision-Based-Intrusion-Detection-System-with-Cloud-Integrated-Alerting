@@ -1,4 +1,4 @@
-# Smart Fisheries Farm Intrusion Detection System
+# Sensor-Fusion-Driven, Vision-Based Intrusion Detection System with Cloud-Integrated Alerting
 
 A dual-sensor, AI-assisted intrusion detection system for open fish enclosures and farm perimeters. It fuses ultrasonic and light-based proximity sensing with real-time YOLOv8 object detection and face recognition, then alerts the farm owner both on-site (buzzer, LED, OLED display) and remotely (Firebase push notification).
 
